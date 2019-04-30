@@ -7,6 +7,10 @@ import Login from './components/user-pages/Login';
 import Home from './components/Home';
 import AddShow from './components/content-pages/AddShow';
 import ShowList from './components/content-pages/ShowList';
+import AddSong from './components/content-pages/AddSong';
+import SongList from './components/content-pages/SongList';
+import AddImage from './components/content-pages/AddImage';
+import Gallery from './components/content-pages/Gallery';
 
 
 class App extends Component {
@@ -51,10 +55,15 @@ class App extends Component {
           {/* Home will be always visible to everyone */}
             <NavLink to="/"> Home </NavLink>
             <NavLink to="/show-list"> Shows </NavLink>
+            <NavLink to="/song-list"> Songs </NavLink>
+            <NavLink to="/gallery"> Gallery </NavLink>
+
           { this.state.currentUser ? (
             // these pages will be visible only if the user exists
             <span>
               <NavLink to="/add-show"> Add a Show</NavLink>
+              <NavLink to="/add-song"> Add a Song</NavLink>
+              <NavLink to="/add-image"> Add to Gallery</NavLink>
               <br />
               <b> { this.state.currentUser.fullName } </b>
               <button onClick={ () => this.logout() }> Log out </button>
@@ -66,6 +75,7 @@ class App extends Component {
               <NavLink to="/login-page"> Login </NavLink>
             </span>
           ) }
+          
          </nav>
         </header>
 
@@ -87,16 +97,21 @@ class App extends Component {
           
           <Route path="/login-page" render={ () => 
             <Login currentUser={ this.state.currentUser } 
-            onUserChange={userDoc => this.syncCurrentUser(userDoc)} />
-          }  />
+            onUserChange={userDoc => this.syncCurrentUser(userDoc)} /> }  />
 
           <Route path="/add-show" render={ () => <AddShow currentUser={ this.state.currentUser }  /> }/>
           <Route path="/show-list" component={ ShowList }/>
 
+          <Route path="/add-song" render={ () => <AddSong currentUser={ this.state.currentUser }  /> }/>
+          <Route path="/song-list" component={ SongList }/>
+
+          <Route path="/add-image" render={ () => <AddImage currentUser={ this.state.currentUser }  /> }/>
+          <Route path="/gallery" component={ Gallery }/>
+
         </Switch>
 
         <footer>
-          oh baby..
+          
         </footer>
       </div>
     );
