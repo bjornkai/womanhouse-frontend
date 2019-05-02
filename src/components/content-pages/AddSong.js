@@ -37,7 +37,7 @@ class AddSong extends Component {
                 { withCredentials: true }
             )
             .then( response => {
-                console.log("new song: ", response.data);
+                // console.log("new song: ", response.data);
                 this.setState({ isSubmitSuccessful: true })
             } )
             .catch( err => console.log(err) );
@@ -61,7 +61,7 @@ class AddSong extends Component {
                             value = { this.state.model }
                             onChange={ e => this.genericSync(e) }
                             type = "text"
-                            title = "title"
+                            name = "title"
                             placeholder = "name of song"
                         />
 

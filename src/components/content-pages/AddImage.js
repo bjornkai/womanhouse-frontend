@@ -28,6 +28,12 @@ class AddImage extends Component {
     .catch( err => console.log(err) );
 }
 
+  // for all fields 
+  genericSync(event) {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+}
+
     syncSpec(event, index){
       const { specs } = this.state;
       // update the spec with whatever user typed in 
@@ -46,7 +52,7 @@ class AddImage extends Component {
           { withCredentials: true }
       )
       .then( response => {
-          console.log("new image: ", response.data);
+          // console.log("new image: ", response.data);
           this.setState({ isSubmitSuccessful: true })
       } )
       .catch( err => console.log(err) );
@@ -71,7 +77,14 @@ class AddImage extends Component {
                   />
                   <br />
                   <img width="200"  src={ this.state.image } alt=""/>
-                  <input />
+                  <input 
+                     value = { this.state.description }
+                     onChange={ e => this.genericSync(e) }
+                     type = "text"
+                     name = "description"
+                     placeholder = "description of image"
+                  
+                  />
                   <button> Save </button>
 
              </form>

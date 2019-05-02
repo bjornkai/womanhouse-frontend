@@ -38,7 +38,7 @@ class AddShow extends Component {
                 { withCredentials: true }
             )
             .then( response => {
-                console.log("new show: ", response.data);
+                // console.log("new show: ", response.data);
                 this.setState({ isSubmitSuccessful: true })
             } )
             .catch( err => console.log(err) );
