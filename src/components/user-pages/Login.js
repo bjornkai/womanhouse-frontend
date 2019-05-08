@@ -22,23 +22,25 @@ class Login extends Component {
         event.preventDefault();
     
         axios.post(
-            "http://localhost:5000/api/login",
-            this.state,
-            { withCredentials: true }, // FORCE axios to send cookies across domains
+          process.env.REACT_APP_SERVER_URL + "/api/login",
+          this.state,
+          { withCredentials: true } // FORCE axios to send cookies across domains
         )
-        .then(response => {
+          .then(response => {
             console.log("Login Page", response.data);
             const { userDoc } = response.data;
             // send "userDoc" to the App.js function that changes "currentUser"
             this.props.onUserChange(userDoc);
-        })
-        .catch(err => {
+          })
+          .catch(err => {
             if (err.response && err.response.data) {
               // console.error("API response", err.response.data)
               return  this.setState({ message: err.response.data.message }) 
             }
         });
-    }
+      }
+
+
     render(){
         return(
             <section className="LoginPage">

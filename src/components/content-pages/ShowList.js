@@ -11,14 +11,23 @@ class ShowList extends Component {
         };
     }
 
-    componentDidMount(){
-        axios.get(
-            "http://localhost:5000/api/shows",
-            { withCredentials: true }
-        )
-        .then( responseFromAPI => this.setState({ showsArray: responseFromAPI.data }) )
-        .catch( err => console.log(err) );
-    }
+ // React will call "componentDidMount()" automatically when ShowList loads
+ componentDidMount() {
+  // retrieve the info from the API as soon as the component loads
+  axios.get(
+  process.env.REACT_APP_SERVER_URL + "/api/shows",
+  { withCredentials: true } // FORCE axios to send cookies across domains
+  )
+  .then(response => {
+      console.log("Show List", response.data);
+      // update our state array with the data from the API
+      this.setState({ showsArray: response.data });
+  })
+  .catch(err => {
+      console.log("Show List ERROR", err);
+      alert("Sorry! Something went wrong.");
+  });
+}
 
     render(){
         // console.log('array of shows: ', this.state.showsArray);

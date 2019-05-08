@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 
+
 class SongList extends Component {
     constructor(props){
         super(props);
@@ -11,14 +12,25 @@ class SongList extends Component {
         };
     }
 
-    componentDidMount(){
-        axios.get(
-            "http://localhost:5000/api/songs",
-            { withCredentials: true }
-        )
-        .then( responseFromAPI => this.setState({ songsArray: responseFromAPI.data }) )
-        .catch( err => console.log(err) );
-    }
+  
+   // React will call "componentDidMount()" automatically when ShowList loads
+   componentDidMount() {
+    // retrieve the info from the API as soon as the component loads
+    axios.get(
+    process.env.REACT_APP_SERVER_URL + "/api/songs",
+    { withCredentials: true } // FORCE axios to send cookies across domains
+    )
+    .then(response => {
+        console.log("Song List", response.data);
+        // update our state array with the data from the API
+        this.setState({ songsArray: response.data });
+    })
+    .catch(err => {
+        console.log("Song List ERROR", err);
+        alert("Sorry! Something went wrong.");
+    });
+}
+
 
     render(){
         // console.log('array of songs: ', this.state.songsArray);

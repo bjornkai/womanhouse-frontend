@@ -1,26 +1,26 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import axios from "axios";
-import { Redirect } from "react-router-dom";
 
-class AddShow extends Component {
-       constructor(props){
-           super(props);
-           this.state = {
-               name: "",
-               date: "",
-               location: "",
-               price: "",
-               isSubmitSuccessful: false,
-           };
-       } 
+class EditShow extends Component {
+    constructor(props){
+        super(props);
+        // console.log(this.props.theShow)
+        const { name, date, location, price } = this.props.theShow;
+        this.state = {
+            name,
+            date,
+            location,
+            price
+        };
+    }
 
-       // for all fields 
-       genericSync(event) {
+
+     // for all fields except images and specs
+     genericSync(event) {
         const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 
-    // upload specs
     syncSpecs(event, index) {
         const { specs } = this.state;
         // update the spec value at the given index
@@ -35,83 +35,64 @@ class AddShow extends Component {
     
         // PUT and POST requests receive a 2nd argument: the info to submit
         // (we are submitting the state we've gathered from the form)
-        axios.post(
-          process.env.REACT_APP_SERVER_URL + "/api/shows",
+        axios.put(
+          process.env.REACT_APP_SERVER_URL + `/api/shows/${this.props.theShow._id}`,
           this.state,
           { withCredentials: true } // FORCE axios to send cookies across domains
         )
           .then(response => {
-            console.log("Add show", response.data);
-            this.setState({ isSubmitSuccessful: true });
+            //   instead of using <Redirect /> we use this.props.history.push()
+            this.props.history.push('/show-list'); 
           })
           .catch(err => {
-            console.log("Add show ERROR", err);
+            console.log("Update Show ERROR", err);
             alert("Sorry! Something went wrong.");
           });
       }
 
-
-
     render(){
-        if(!this.props.currentUser){
-            return <Redirect to="/login-page" />;
-        }
-
-        if (this.state.isSubmitSuccessful) {
-            // redirect back to the show list page if the form submission worked
-            return <Redirect to="/show-list" />;
-        }
-        
+        const { name, date, location, price } = this.state;
         return (
             <section>
-                <h2>Add a Show</h2>
+                <h2>Edit { name }  </h2>
 
                 <form onSubmit={event => this.handleSubmit(event)}>
                     <label> Name: </label>
                     <input 
-                        value={this.state.name}
+                        value={ name }
                         onChange={event => this.genericSync(event)}
                         type="text" 
                         name="name" 
-                        placeholder="name of show" 
                     />
 
                     <label> Date: </label>
                     <input 
-                        value={this.state.date}
+                        value={ date }
                         onChange={event => this.genericSync(event)}
                         type="text" 
                         name="date" 
-                        placeholder="date of show" 
                     />
 
                     <label> Location: </label>
                     <input 
-                        value={this.state.location}
+                        value={ location }
                         onChange={event => this.genericSync(event)}
-                        type="text" 
+                        type="number" 
                         name="location" 
-                        placeholder="location of the show" 
                     />
 
                     <label> Price: </label>
                     <input 
-                        value={this.state.price}
+                        value={ price }
                         onChange={event => this.genericSync(event)}
-                        type="text" 
+                        type="number" 
                         name="price" 
-                        placeholder="price of the tickets" 
                     />
-                    
                     <button> Save </button>
-                    
                 </form>
             </section>
         )
     }
-
-
-
 }
 
-export default AddShow;
+export default EditShow;

@@ -1,29 +1,25 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import axios from "axios";
-import { Redirect } from "react-router-dom";
 
-class AddSong extends Component { 
-    constructor(props) {
+class EditSong extends Component {
+    constructor(props){
         super(props);
-    
+        // console.log(this.props.theSong)
+        const { title, author, lyrics } = this.props.theSong;
         this.state = {
-          title: "",
-          author: "",
-          lyrics: "",
-          // each empty string in "specs" will display an <input> tag
-          isSubmitSuccessful: false,
+            title,
+            author,
+            lyrics
         };
-
-        console.log(this.props)
     }
 
-    // for all fields except images and specs
-    genericSync(event) {
+
+     // for all fields except images and specs
+     genericSync(event) {
         const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 
-    // upload specs
     syncSpecs(event, index) {
         const { specs } = this.state;
         // update the spec value at the given index
@@ -38,69 +34,56 @@ class AddSong extends Component {
     
         // PUT and POST requests receive a 2nd argument: the info to submit
         // (we are submitting the state we've gathered from the form)
-        axios.post(
-          process.env.REACT_APP_SERVER_URL + "/api/songs",
+        axios.put(
+          process.env.REACT_APP_SERVER_URL + `/api/songs/${this.props.theSong._id}`,
           this.state,
           { withCredentials: true } // FORCE axios to send cookies across domains
         )
           .then(response => {
-            console.log("Add song", response.data);
-            this.setState({ isSubmitSuccessful: true });
+            //   instead of using <Redirect /> we use this.props.history.push()
+            this.props.history.push('/song-list'); 
           })
           .catch(err => {
-            console.log("Add song ERROR", err);
+            console.log("Update Song ERROR", err);
             alert("Sorry! Something went wrong.");
           });
       }
 
     render(){
-        if(!this.props.currentUser){
-            return <Redirect to="/login-page" />;
-        }
-
-        if (this.state.isSubmitSuccessful) {
-            // redirect back to the song list page if the form submission worked
-            return <Redirect to="/song-list" />;
-        }
-
+        const { title, author, lyrics } = this.state;
         return (
             <section>
-                <h2>Add a Song</h2>
+                <h2>Edit { title } by { author } </h2>
 
                 <form onSubmit={event => this.handleSubmit(event)}>
                     <label> Title: </label>
                     <input 
-                        value={this.state.title}
+                        value={ title }
                         onChange={event => this.genericSync(event)}
                         type="text" 
                         name="title" 
-                        placeholder="name of song" 
                     />
 
                     <label> Author: </label>
                     <input 
-                        value={this.state.author}
+                        value={ author }
                         onChange={event => this.genericSync(event)}
                         type="text" 
                         name="author" 
-                        placeholder="name of author" 
                     />
 
                     <label> Lyrics: </label>
                     <input 
-                        value={this.state.lyrics}
+                        value={ lyrics }
                         onChange={event => this.genericSync(event)}
-                        type="text" 
+                        type="number" 
                         name="lyrics" 
-                        placeholder="lyrics of song" 
                     />
-                    
                     <button> Save </button>
-                    
                 </form>
             </section>
         )
     }
 }
 
-export default AddSong;
+export default EditSong;

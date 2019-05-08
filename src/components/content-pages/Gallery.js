@@ -13,7 +13,7 @@ class Gallery extends Component {
 
     componentDidMount(){
         axios.get(
-            "http://localhost:5000/api/gallery",
+          process.env.REACT_APP_SERVER_URL + "/api/gallery",
             { withCredentials: true }
         )
         .then( responseFromAPI => this.setState({ galleryArray: responseFromAPI.data }) )

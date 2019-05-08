@@ -23,22 +23,25 @@ handleSubmit(event){
     event.preventDefault();
 
     axios.post(
-        "http://localhost:5000/api/signup", // 1st and mandatory: which route I'm hitting in the backend
-        this.state, // 2nd and mandatory: what I'm sending (since it's POST route I have to send something)
-        { withCredentials:true } // 3rd and optional: credentials:true in CORS
-    )
-    .then( responseFromServer => {
-        // console.log("response is: ", responseFromServer);
-        const { userDoc } = responseFromServer.data;
-        this.props.onUserChange(userDoc);
-    } )
-    .catch(err => {
-        // console.log("error while signup: ", err);
-        if(err.response && err.response.data){
-            return this.setState({ message:err.response.data.message });
-        }
-    })
-}
+        process.env.REACT_APP_SERVER_URL + "/api/signup",
+        this.state,
+        { withCredentials: true } // FORCE axios to send cookies across domains
+      )
+        .then(response => {
+          // console.log("Signup Page", response.data);
+          const { userDoc } = response.data;
+          // send "userDoc" to the App.js function that changes "currentUser"
+          this.props.onUserChange(userDoc);
+        })
+        .catch(err => {
+          if (err.response && err.response.data) {
+            console.error("API response", err.response.data)
+             this.setState({ message: err.response.data}) 
+          }
+        });
+    }
+
+
 
 render(){
     if(this.props.currentUser){

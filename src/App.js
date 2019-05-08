@@ -11,6 +11,7 @@ import AddSong from './components/content-pages/AddSong';
 import SongList from './components/content-pages/SongList';
 import AddImage from './components/content-pages/AddImage';
 import Gallery from './components/content-pages/Gallery';
+import NotFound from "./components/NotFound.js";
 
 
 class App extends Component {
@@ -21,12 +22,21 @@ class App extends Component {
     }
   }
 
-  componentDidMount(){
-    axios.get("http://localhost:5000/api/checkuser", { withCredentials:true })
-    .then(responseFromBackend => {
-      // console.log("Check User in APP.JS: ",responseFromBackend.data)
-      const { userDoc } = responseFromBackend.data;
+  componentDidMount() {
+    // React doesn't know at the start if we are logged-in or not
+    // (but we can ask the server if we are through an API request)
+    axios.get(
+      process.env.REACT_APP_SERVER_URL + "/api/checkuser",
+      { withCredentials: true } // FORCE axios to send cookies across domains
+    )
+    .then(response => {
+      // console.log("Check User", response.data);
+      const { userDoc } = response.data;
       this.syncCurrentUser(userDoc);
+    })
+    .catch(err => {
+      console.log("Check User ERROR", err);
+      alert("Sorry! Something went wrong.");
     });
   }
 
@@ -36,13 +46,19 @@ class App extends Component {
     this.setState({ currentUser: user });
   }
 
-  logout(){
+ logoutClick() {
     axios.delete(
-      "http://localhost:5000/api/logout",
-      { withCredentials: true }
+      process.env.REACT_APP_SERVER_URL + "/api/logout",
+      { withCredentials: true } // FORCE axios to send cookies across domains
     )
-    .then(() => this.syncCurrentUser(null))
-    .catch(err => console.log(err));
+    .then(() => {
+      // make "currentUser" empty again (like it was at the start)
+      this.syncCurrentUser(null);
+    })
+    .catch(err => {
+      console.log("Logout ERROR", err);
+      alert("Sorry! Something went wrong.");
+    });
   }
 
 
@@ -52,26 +68,30 @@ class App extends Component {
         <header>
          <h1> womanhouse </h1>
          <nav>
-          {/* Home will be always visible to everyone */}
-            <NavLink to="/"> Home </NavLink>
-            <NavLink to="/show-list"> Shows </NavLink>
-            <NavLink to="/song-list"> Songs </NavLink>
-            <NavLink to="/gallery"> Gallery </NavLink>
-
+           
           { this.state.currentUser ? (
-            // these pages will be visible only if the user exists
             <span>
+          {/* Home will be always visible to everyone */}
+              <NavLink to="/"> Home </NavLink>
               <NavLink to="/add-show"> Add a Show</NavLink>
               <NavLink to="/add-song"> Add a Song</NavLink>
               <NavLink to="/add-image"> Add to Gallery</NavLink>
               <br />
-              <b> { this.state.currentUser.fullName } </b>
-              <button onClick={ () => this.logout() }> Log out </button>
+              <br />
+              <b> { this.state.currentUser.email } </b>
+
+             <button onClick={() => this.logoutClick()}>
+                 Log Out
+                </button>
+
             </span>
           ) : (
             // these pages will be visible only if there is no user in the session // WILL HIDE LATER <------- !!!!!!!!!!!
             <span>
-              <NavLink to="/signup-page"> Signup </NavLink>
+              <NavLink to="/show-list"> Shows </NavLink>
+              <NavLink to="/song-list"> Songs </NavLink>
+              <NavLink to="/gallery"> Gallery </NavLink>
+              {/* <NavLink to="/signup-page"> Signup </NavLink> */}
               <NavLink to="/login-page"> Login </NavLink>
             </span>
           ) }
@@ -107,6 +127,10 @@ class App extends Component {
 
           <Route path="/add-image" render={ () => <AddImage currentUser={ this.state.currentUser }  /> }/>
           <Route path="/gallery" component={ Gallery }/>
+
+
+          {/* 404 route ALWAYS LAST */}
+          <Route component={NotFound} />   
 
         </Switch>
 

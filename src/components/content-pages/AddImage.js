@@ -11,22 +11,32 @@ class AddImage extends Component {
         isSubmitSuccessful: false,
     };
   } 
+  
+    // UPLOAD IMAGE
 
-    uploadImage(event){
-    // console.log("upload image: ", event.target.files);
-    const { files } = event.target;    
-    const uploadData = new FormData();
-
-    uploadData.append("submittedFile", files[0]);
-
-    axios.post(
-        "http://localhost:5000/api/upload-file",
+    uploadImage(event) {
+      const { files } = event.target;
+      // console.log("File SELECTED", files[0]);
+  
+      // the "FormData" class will format the files for sending to our API
+      const uploadData = new FormData();
+      // the name "fileSubmission" is the one your backend route defined.
+      uploadData.append("fileSubmission", files[0]);
+  
+      axios.post(
+        process.env.REACT_APP_SERVER_URL + "/api/upload-file",
         uploadData,
         { withCredentials: true }
-    )
-    .then( response  => this.setState({ image:response.data.fileUrl }))
-    .catch( err => console.log(err) );
-}
+      )
+      .then(response => {
+      //   console.log("Upload Image", response.data);
+        this.setState({ image: response.data.fileUrl });
+      })
+      .catch(err => {
+        console.log("Upload Image ERROR", err);
+        alert("Sorry! Something went wrong.");
+      });
+    }
 
   // for all fields 
   genericSync(event) {
@@ -43,20 +53,27 @@ class AddImage extends Component {
       this.setState({ specs });
     }
 
-    handleSubmit(event){
+    handleSubmit(event) {
+      // stop the page refresh
       event.preventDefault();
-
+  
+      // PUT and POST requests receive a 2nd argument: the info to submit
+      // (we are submitting the state we've gathered from the form)
       axios.post(
-          "http://localhost:5000/api/gallery",
-          this.state,
-          { withCredentials: true }
+        process.env.REACT_APP_SERVER_URL + "/api/gallery",
+        this.state,
+        { withCredentials: true } // FORCE axios to send cookies across domains
       )
-      .then( response => {
-          // console.log("new image: ", response.data);
-          this.setState({ isSubmitSuccessful: true })
-      } )
-      .catch( err => console.log(err) );
+        .then(response => {
+          // console.log("Add Image", response.data);
+          this.setState({ isSubmitSuccessful: true });
+        })
+        .catch(err => {
+          console.log("Add image ERROR", err);
+          alert("Sorry! Something went wrong.");
+        });
     }
+
 
 
     render(){
