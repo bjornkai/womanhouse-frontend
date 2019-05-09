@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import { Redirect } from 'react-router-dom';
 
 class EditShow extends Component {
     constructor(props){
         super(props);
-        // console.log(this.props.theShow)
-        const { name, date, location, price } = this.props.theShow;
+        // console.log(props)
+        console.log(this.props.theShow, "the props.show")
+        const { _id, name, date, location, price } = this.props.theShow;
+        // console.log(_id, " id in the constructor")
+        
         this.state = {
+            _id,
             name,
             date,
             location,
-            price
+            price,
+            redirect: false
         };
     }
 
@@ -30,9 +36,9 @@ class EditShow extends Component {
     }
 
     handleSubmit(event) {
-        // stop the page refresh
+        console.log(this.state);
+        // stop the page from refreshing
         event.preventDefault();
-    
         // PUT and POST requests receive a 2nd argument: the info to submit
         // (we are submitting the state we've gathered from the form)
         axios.put(
@@ -41,8 +47,7 @@ class EditShow extends Component {
           { withCredentials: true } // FORCE axios to send cookies across domains
         )
           .then(response => {
-            //   instead of using <Redirect /> we use this.props.history.push()
-            this.props.history.push('/show-list'); 
+            this.setState({redirect: true}); 
           })
           .catch(err => {
             console.log("Update Show ERROR", err);
@@ -52,7 +57,11 @@ class EditShow extends Component {
 
     render(){
         const { name, date, location, price } = this.state;
-        return (
+        console.log(this.state, "this is edit show component");
+        if(this.state.redirect){
+            return <Redirect to="/show-list"/>;
+        } else {
+            return (
             <section>
                 <h2>Edit { name }  </h2>
 
@@ -77,7 +86,7 @@ class EditShow extends Component {
                     <input 
                         value={ location }
                         onChange={event => this.genericSync(event)}
-                        type="number" 
+                        type="text" 
                         name="location" 
                     />
 
@@ -85,13 +94,15 @@ class EditShow extends Component {
                     <input 
                         value={ price }
                         onChange={event => this.genericSync(event)}
-                        type="number" 
+                        type="text" 
                         name="price" 
                     />
                     <button> Save </button>
                 </form>
             </section>
         )
+        }
+        
     }
 }
 

@@ -11,7 +11,9 @@ import AddSong from './components/content-pages/AddSong';
 import SongList from './components/content-pages/SongList';
 import AddImage from './components/content-pages/AddImage';
 import Gallery from './components/content-pages/Gallery';
+import ShowDetails from './components/content-pages/ShowDetails';
 import NotFound from "./components/NotFound.js";
+
 
 
 class App extends Component {
@@ -76,6 +78,7 @@ class App extends Component {
               <NavLink to="/add-show"> Add a Show</NavLink>
               <NavLink to="/add-song"> Add a Song</NavLink>
               <NavLink to="/add-image"> Add to Gallery</NavLink>
+              <NavLink to="/show-list"> Update Show List</NavLink>
               <br />
               <br />
               <b> { this.state.currentUser.email } </b>
@@ -121,6 +124,8 @@ class App extends Component {
 
           <Route path="/add-show" render={ () => <AddShow currentUser={ this.state.currentUser }  /> }/>
           <Route path="/show-list" component={ ShowList }/>
+          <Route path="/show-details/:showId" component={ShowDetails} />
+
 
           <Route path="/add-song" render={ () => <AddSong currentUser={ this.state.currentUser }  /> }/>
           <Route path="/song-list" component={ SongList }/>

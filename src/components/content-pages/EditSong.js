@@ -49,6 +49,14 @@ class EditSong extends Component {
           });
       }
 
+      deleteSong(id){
+        axios.delete(process.env.REACT_APP_SERVER_URL + `/api/songs/${id}`)
+        .then(responseFromApi => {
+            this.props.history.push('/song-list'); 
+        })
+        .catch(err => console.log(err));
+    }
+
     render(){
         const { title, author, lyrics } = this.state;
         return (
@@ -80,6 +88,7 @@ class EditSong extends Component {
                         name="lyrics" 
                     />
                     <button> Save </button>
+                    <button onClick={() => this.deleteSong}>Delete</button>
                 </form>
             </section>
         )

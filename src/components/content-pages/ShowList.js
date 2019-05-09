@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 
 
 class ShowList extends Component {
@@ -19,7 +21,7 @@ class ShowList extends Component {
   { withCredentials: true } // FORCE axios to send cookies across domains
   )
   .then(response => {
-      console.log("Show List", response.data);
+    //   console.log("Show List", response.data);
       // update our state array with the data from the API
       this.setState({ showsArray: response.data });
   })
@@ -40,7 +42,7 @@ class ShowList extends Component {
                   <li key={ oneShow._id }>
                             { oneShow.name } at { oneShow.location }
                             <p> { oneShow.price } </p>
-              
+                    <Link to ={`show-details/${oneShow._id}`}>edit this show here </Link>
                         </li>
                 )
               })}
