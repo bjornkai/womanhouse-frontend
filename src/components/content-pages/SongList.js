@@ -37,12 +37,12 @@ class SongList extends Component {
         const { songsArray } = this.state;
         return (
             <section>
-              <h1> Songs </h1>
+              <h1 id="header"> Songs </h1>
               {songsArray.map(oneSong => {
                 return (
                   <li key={ oneSong._id }>
                             { oneSong.title } lyrics written by { oneSong.author }
-                            <p> { oneSong.lyrics } </p>
+                            <p id="song-display"> { oneSong.lyrics } </p>
               
                         </li>
                 )

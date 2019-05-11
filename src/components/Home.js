@@ -5,7 +5,7 @@ class Home extends Component {
     return (
       <section className="HomePage">
        <h2>Home Page</h2>
-        <p>something goes here</p>
+        <p>five-piece band from Miami</p>
       </section>
     )
   }

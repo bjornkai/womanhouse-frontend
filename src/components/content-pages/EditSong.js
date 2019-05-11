@@ -61,7 +61,7 @@ class EditSong extends Component {
         const { title, author, lyrics } = this.state;
         return (
             <section>
-                <h2>Edit { title } by { author } </h2>
+                <h2 id="header">Edit { title } by { author } </h2>
 
                 <form onSubmit={event => this.handleSubmit(event)}>
                     <label> Title: </label>

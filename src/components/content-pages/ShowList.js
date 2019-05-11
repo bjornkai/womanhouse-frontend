@@ -36,7 +36,7 @@ class ShowList extends Component {
         const { showsArray } = this.state;
         return (
             <section>
-              <h1> Shows </h1>
+              <h1 id="header"> Shows </h1>
               {showsArray.map(oneShow => {
                 return (
                   <li key={ oneShow._id }>

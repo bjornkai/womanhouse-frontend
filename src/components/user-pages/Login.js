@@ -44,7 +44,7 @@ class Login extends Component {
     render(){
         return(
             <section className="LoginPage">
-                <h2>Log In</h2>
+                <h2 id="header">Log In</h2>
 
                 <form onSubmit={event => this.handleSubmit(event)}>
                     <label> Email:  </label>

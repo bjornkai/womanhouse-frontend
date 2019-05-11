@@ -6,7 +6,7 @@ class EditShow extends Component {
     constructor(props){
         super(props);
         // console.log(props)
-        console.log(this.props.theShow, "the props.show")
+        // console.log(this.props.theShow, "the props.show")
         const { _id, name, date, location, price } = this.props.theShow;
         // console.log(_id, " id in the constructor")
         
@@ -35,8 +35,10 @@ class EditShow extends Component {
         this.setState({ specs });
     }
 
+    
+
     handleSubmit(event) {
-        console.log(this.state);
+        // console.log(this.state);
         // stop the page from refreshing
         event.preventDefault();
         // PUT and POST requests receive a 2nd argument: the info to submit
@@ -57,15 +59,15 @@ class EditShow extends Component {
 
     render(){
         const { name, date, location, price } = this.state;
-        console.log(this.state, "this is edit show component");
+        // console.log(this.state, "this is edit show component");
         if(this.state.redirect){
             return <Redirect to="/show-list"/>;
         } else {
             return (
             <section>
-                <h2>Edit { name }  </h2>
+                <h2 id="header">Edit { name }  </h2>
 
-                <form onSubmit={event => this.handleSubmit(event)}>
+                <form id="form" onSubmit={event => this.handleSubmit(event)}>
                     <label> Name: </label>
                     <input 
                         value={ name }

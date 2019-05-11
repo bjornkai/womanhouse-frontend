@@ -48,7 +48,7 @@ render(){
         return(
             <section>
                 <h2> You are signed up! </h2>
-                <p> Welcome, { this.props.currentUser.fullName }! 
+                <p> Welcome! 
                     Your email is: <b> { this.props.currentUser.email } </b>
                 </p>
             </section>

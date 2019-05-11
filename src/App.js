@@ -68,8 +68,8 @@ class App extends Component {
     return (
       <div className="App">
         <header>
-         <h1> womanhouse </h1>
-         <nav>
+         <h1 id="womanhouse-header"> womanhouse </h1>
+         <nav id="nav-bar">
            
           { this.state.currentUser ? (
             <span>
