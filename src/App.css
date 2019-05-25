@@ -4,7 +4,6 @@
 
 .App-header {
   background-color: whitesmoke;
-  /* background-image: url("../images/"); */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -31,7 +30,7 @@
   color: rgba(110, 0, 0, 0.89);
   letter-spacing: -13px;
   float: left;
-  font-size: 60px;
+  font-size: 55px;
   writing-mode: vertical-rl;
   text-orientation: upright;
   font-family: 'Franklin Gothic Medium', Arial, sans-serif; 
@@ -59,6 +58,9 @@ body {
   background-attachment: fixed;
   text-decoration: none;
   background-color: whitesmoke;
+  background-image: url("./images/Calla-Lily-Drawing.png");
+  background-size: 300px;
+  background-position: right bottom;
 }
 
 #form {
@@ -84,3 +86,6 @@ body {
   padding-left: 15px;
   }
 
+#shows-list {
+  text-align: center;
+}

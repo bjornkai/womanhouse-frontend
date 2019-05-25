@@ -35,7 +35,7 @@ class ShowList extends Component {
         // console.log('array of shows: ', this.state.showsArray);
         const { showsArray } = this.state;
         return (
-            <section>
+            <section id="shows-list">
               <h1 id="header"> Shows </h1>
               {showsArray.map(oneShow => {
                 return (
